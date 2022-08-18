@@ -1,0 +1,27 @@
+{
+  "name": "garbinluca/guzzle-client",
+  "description": "Guzzle Client wrapper with faker",
+  "authors": [
+    {
+      "name": "Luca Garbin",
+      "email": "hello@lucagarbin.it"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "laravel/framework": "5.5.*",
+    "guzzlehttp/guzzle": "^6.3"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "garbinluca\\guzzleclient\\GuzzleClientServiceProvider"
+      ]
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "GarbinLuca\\GuzzleClient\\": "src/"
+    }
+  }
+}
