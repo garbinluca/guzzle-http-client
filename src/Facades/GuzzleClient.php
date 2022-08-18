@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Facade;
 class GuzzleClient extends Facade
 {
 
-	public static function fake()
+	public static function fake($responses = null)
 	{
-		static::swap(new ClientFake());
+		static::swap(new ClientFake($responses));
 	}
 
     /**

@@ -2,14 +2,18 @@
 
 namespace GarbinLuca\GuzzleClient;
 
+use GuzzleHttp\Exception\BadResponseException;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 class ClientFake implements ClientInterface
 {
 
 	private $response = null;
+	private $index = 0;
 
-	public function __construct() {
+	public function __construct($responses) {
+
+		$this->responses = $responses;
 
 	}
 
@@ -17,12 +21,20 @@ class ClientFake implements ClientInterface
 	{
 	}
 
-	public function post(string $url, $params = [], $decode = true)
+	public function parseResponse($response) {
+
+		return (object) $response;
+
+	}
+
+	public function post(string $url, $params = [])
 	{
 
-		$response = ['success' => true];
-		$this->response = $decode ? json_encode($response) : $response;
-		return new Response($response);
+		$response = $this->getResponse();
+
+		$this->index++;
+
+		return $this->parseResponse($response);
 
 	}
 
@@ -38,6 +50,26 @@ class ClientFake implements ClientInterface
 
 	public function get(string $url)
 	{
-		// TODO: Implement get() method.
+
+		$response = $this->getResponse();
+
+		$this->index++;
+
+		return $this->parseResponse($response);
+
+	}
+
+	private function getResponse() {
+
+
+		if (is_array($this->responses) && $this->responses[$this->index])
+			$response =  $this->responses[$this->index];
+		else
+			$response = ['code' => 200, 'success' => true, 'debug' => 'true'];
+
+		if (array_key_exists('exception', $response))
+			throw new \Exception($response['exception']);
+
+		return $response;
 	}
 }

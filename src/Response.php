@@ -8,9 +8,14 @@ class Response {
 		$this->data = $data;
 	}
 
-	public function getBody() {
+	public function getBody($decode = true) {
 
-		return $this->data;
+		$response = $this->data;
+
+		if ($decode)
+			$response = json_decode($this->data, true);
+
+		return $response;
 
 	}
 

@@ -22,11 +22,9 @@ class Client implements ClientInterface
 
 	}
 
-	private function parseResponse($response, $decode) {
+	public function parseResponse($response) {
 
-		if ($decode)
-			$response = json_decode($response, true);
-
+        $response =  (object) json_decode($response->getBody(), true);
 		return $response;
 
 	}
@@ -40,21 +38,19 @@ class Client implements ClientInterface
 
 	}
 
-	public function post($url, $params = [], $decode = true)
+	public function post($url, $params = [])
 	{
 
 		$response = $this->client->post($url, $params);
-		$this->response = $this->parseResponse($response->getBody(), $decode);
-		return $response;
+		return $this->parseResponse($response);
 
 	}
 
-	public function get(string $url, $decode = true)
+	public function get(string $url)
 	{
 
 		$response = $this->client->get($url);
-		$this->response = $this->parseResponse($response->getBody(), $decode);
-		return $response;
+		return $this->parseResponse($response);
 
 	}
 }
